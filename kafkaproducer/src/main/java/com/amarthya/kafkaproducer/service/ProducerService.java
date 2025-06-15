@@ -1,5 +1,7 @@
 package com.amarthya.kafkaproducer.service;
 
+import com.amarthya.kafkaproducer.constants.KafkaProducerConstants;
+import com.amarthya.kafkaproducer.model.Customer;
 import org.apache.kafka.clients.producer.Producer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -19,7 +21,12 @@ private String topicName;
 
 
      public void sendMessage(String message){
-        kafkaTemplate.send(topicName, message);
+          kafkaTemplate.send(KafkaProducerConstants.TOPIC_NAME, message);
+        //kafkaTemplate.send(topicName, message);
       }
 
+      // If we give partition number, then all msgs will be sent to that partition only
+    public void publishRawMessage(Customer customer) {
+        kafkaTemplate.send("customObjTopic",2,null, customer.toString());
+    }
 }
